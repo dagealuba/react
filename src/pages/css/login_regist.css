@@ -1,0 +1,34 @@
+/*@import "~antd/dist/antd.min.css";*/
+
+.login-form {
+  max-width: 500px;
+  text-align: left;
+}
+
+.register-form {
+  max-width: 500px;
+  text-align: left;
+}
+
+.index-row {
+  position: relative;
+  top: 15%;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.index-page{
+  height: 100%;
+  /*background-image:url("../../Img/850897.png");*/
+}
+
+.index-background {
+  height: 100%;
+  background-image:url("../../Img/850897.png");
+}

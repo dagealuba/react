@@ -1,0 +1,28 @@
+.ant-card-meta-title {
+    font-size: 30px;
+}
+
+.ant-card-meta-description {
+    font-size: 20px;
+}
+
+.ant-card-actions {
+    max-height: 50px;
+}
+
+.ant-card-actions span{
+    width: 100%;
+}
+
+span i {
+    width: 100%;
+}
+
+button i {
+    width:auto;
+}
+
+.ant-card-cover:hover {
+    opacity: 0.8;
+    background-color: #000c17;
+}
