@@ -26,7 +26,7 @@ class LoginForm extends Component {
         this.props.form.validateFields((err,values) => {
             if (!err){
                 this.setState({
-                    login_ing:!this.state.login_ing
+                    login_ing:true
                 })
                 // console.log('Received values of form: ', values);
                 fetch(global.music.url+"LoginServlet",{
@@ -43,7 +43,7 @@ class LoginForm extends Component {
                     });
                     if (data){
                         this.setState({
-                            login_ing:!this.state.login_ing
+                            login_ing:false
                         })
                     }
                     if (data === "login_success") {

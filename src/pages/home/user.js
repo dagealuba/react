@@ -4,6 +4,7 @@ import {Card, Col, Icon, Modal, Row, Tooltip} from "antd";
 import "../../router/config";
 import "../css/user.css";
 import UserMessageForm from "./userMessageForm";
+import UserPasswordForm from "./userPasswordForm";
 
 const  { Meta } = Card;
 
@@ -81,7 +82,7 @@ class User extends React.Component{
     render() {
         const userMessage = <UserMessageForm onClick={this.handleOk.bind(this)}></UserMessageForm>;
         const avatar = <div>更换头像</div>;
-        const changePassword = <div>更换密码</div>;
+        const changePassword = <UserPasswordForm onClick={this.handleOk.bind(this)}/>;
 
         const actions = [
             <Tooltip placement={"topLeft"} arrowPointAtCenter={"true"} title={<div><strong><p style={{fontSize:"20px"}}>修改个人信息</p></strong></div>}>
