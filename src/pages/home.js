@@ -38,7 +38,7 @@ class Home extends React.Component{
             return <Redirect to={"/"} />
         }
         return (
-            <Layout style={{width:"70%",marginLeft:"15%",height:"100%",opacity:0.9,minWidth:"1000px"}}>
+            <Layout style={{width:"70%",marginLeft:"15%",height:"100%",opacity:0.9,minWidth:"1000px",minHeight:"600px"}}>
                 <Header>
                     <div className={"logo"}></div>
                     <HeadBar current={this.state.current} onClick={this.handleClick.bind(this)} Logout={this.onLogout}/>

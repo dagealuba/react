@@ -13,23 +13,27 @@ class userPasswordForm extends React.Component{
             confirm:false,
             check:false
         }
-    }
+    };
 
     handleConfirmBlur = (e) => {
         const value = e.target.value;
         this.setState({
             confirm:this.state.confirm || !!value
         });
-    }
+    };
 
-
-    handlePasswordChange = (e) => {
+    handlePasswordBlur = (e) => {
         const value = e.target.value;
         this.setState({
             check:this.state.check || !!value
         })
-    }
+    };
 
+    /*
+    * fetch "GET" to UpdateUserMessageServlet
+    * success return success
+    * else return wrong
+    * */
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -37,16 +41,12 @@ class userPasswordForm extends React.Component{
             if ( !err ){
                 this.setState({
                     loading:true
-                })
+                });
 
                 //修改密码
-                fetch(global.music.url+"UpdateUserServlet",{
-                    method:"POST",
+                fetch(global.music.url+"UpdateUserMessageServlet?userId="+cookie.load("userId")+"&newPassword="+values.newPassword,{
+                    method:"GET",
                     mode:"cors",
-                    headers:{
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    },
-                    body:"userId="+cookie.load("userId")+"&newPassword="+values.newPassword
                 }).then(res => res.text() ).then(data => {
                     this.setState({
                         loading:false
@@ -60,7 +60,7 @@ class userPasswordForm extends React.Component{
                 })
             }
         })
-    }
+    };
 
     compareToFirstPassword = (rule, value, callback) => {
         const form = this.props.form;
@@ -71,7 +71,7 @@ class userPasswordForm extends React.Component{
         else {
             callback();
         }
-    }
+    };
 
     validatorToNextPassword = (rule, value, callback) => {
         const form = this.props.form;
@@ -81,10 +81,10 @@ class userPasswordForm extends React.Component{
         }
 
         callback();
-    }
+    };
 
     checkPassword = (rule, value, callback) => {
-        const form = this.props.form;
+        // const form = this.props.form;
 
         // if (value && this.state.check){
         //     form.validateFields(['confirmNewPassword'],{force:true});
@@ -105,8 +105,7 @@ class userPasswordForm extends React.Component{
                 callback("密码错误!")
             }
         })
-    }
-
+    };
 
     render() {
         const formItemLayout = {
@@ -137,14 +136,17 @@ class userPasswordForm extends React.Component{
 
         return(
             <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+                <Input.Password style={{display:"none"}}/>
                 <Form.Item label={"原密码"}>
                     {getFieldDecorator("userPassword",{
                         rules:[
                             {required:true,message:"原密码不能为空!"},
                             {validator:this.checkPassword}
-                        ]
+                        ],
+                        validateFirst:"true",
+                        validateTrigger:"onBlur"
                     })(
-                        <Input.Password onChange={this.handlePasswordChange}/>
+                        <Input.Password onBlur={this.handlePasswordBlur}/>
                     )}
                 </Form.Item>
 

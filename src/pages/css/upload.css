@@ -1,0 +1,19 @@
+.uploader-avatar > .ant-upload {
+    width:470px;
+    height:400px
+}
+
+.ant-upload-list-picture-card > .ant-upload-list-item {
+    width:470px;
+    height:400px
+}
+
+.ant-upload-list-picture-card .ant-upload-list-item-actions .anticon-eye-o{
+    font-size: xx-large;
+    margin-right: 20px;
+}
+
+.ant-upload-list-picture-card .ant-upload-list-item-actions .anticon-delete{
+    font-size: xx-large;
+    margin-left: 20px;
+}

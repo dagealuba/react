@@ -47,8 +47,13 @@ class userMessageForm extends React.Component{
         this.setState({
             autoComplete:autocomplete,
         })
-    }
+    };
 
+    /*
+    * fetch "POST" to UpdateUserMessageServlet
+    * success return true
+    * else return wrong
+    * */
     handleSubmit = (e) => {
         e.preventDefault();
 
@@ -56,7 +61,7 @@ class userMessageForm extends React.Component{
             if (!err) {
                 this.setState({
                     loading:true
-                })
+                });
 
                 let body = "userName="+values.userName+"&userEmail="+values.userEmail;
 
@@ -71,19 +76,19 @@ class userMessageForm extends React.Component{
                     if (data === "true"){
                         this.setState({
                             loading:true
-                        })
+                        });
                         this.props.onClick();
                     }
                     else if (data === "wrong"){
                         this.setState({
                             loading:true
-                        })
+                        });
                         message.error("更新失败，请稍候再试!")
                     }
                 })
             }
         })
-    }
+    };
 
     render() {
         const formItemLayout = {

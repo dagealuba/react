@@ -5,6 +5,8 @@ import "../../router/config";
 import "../css/user.css";
 import UserMessageForm from "./userMessageForm";
 import UserPasswordForm from "./userPasswordForm";
+import UserAvatar from "./userAvatar";
+import cookie from "react-cookies";
 
 const  { Meta } = Card;
 
@@ -15,7 +17,7 @@ class User extends React.Component{
         super(props);
 
         this.state = {
-            avatarSrc:"https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
+            avatarSrc:"",
             userId: "",
             userEmail:"",
             userName:"",
@@ -36,8 +38,10 @@ class User extends React.Component{
                 userId:data.userId,
                 userEmail:data.userEmail,
                 userName:data.userName,
+                avatarSrc:data.avatarSrc,
                 loading:!this.state.loading
             })
+            // alert(data.avatarSrc);
         })
     }
 
@@ -46,42 +50,47 @@ class User extends React.Component{
             modalContent: "avatar"
         });
         this.showModal();
-    }
+    };
 
     changeUserMessage = () => {
         this.setState({
             modalContent:"userMessage"
         });
         this.showModal();
-    }
+    };
 
     changeUserPassword = () => {
         this.setState({
             modalContent:"userPassword"
         });
         this.showModal()
-    }
+    };
+
     showModal = () =>{
         this.setState({
             visible:true,
         })
-    }
+    };
 
     handleCancel = () => {
         this.setState({
             visible:false,
         })
-    }
+    };
 
     handleOk = () => {
         this.setState({
             visible:false
         })
+    };
+
+    aftarChangeAvatar = () => {
+        window.location.reload();
     }
 
     render() {
-        const userMessage = <UserMessageForm onClick={this.handleOk.bind(this)}></UserMessageForm>;
-        const avatar = <div>更换头像</div>;
+        const userMessage = <UserMessageForm onClick={this.handleOk.bind(this)}/>;
+        const avatar = <UserAvatar handleCancle={this.handleCancel.bind(this)} />
         const changePassword = <UserPasswordForm onClick={this.handleOk.bind(this)}/>;
 
         const actions = [
@@ -94,7 +103,7 @@ class User extends React.Component{
         ];
 
         return(
-            <div style={{height:"100%"}}>
+            <div style={{height:"100%",minHeight:"500px"}}>
                 <Row style={{height:"100%"}}>
                     <Col span={8} style={{height:"100%"}}>
                         <Card
@@ -116,16 +125,17 @@ class User extends React.Component{
                         </Card>
                     </Col>
                 </Row>
+
                 <Modal
-                    title={"修改信息"}
+                    title={this.state.modalContent === "userMessage" ? "修改用户信息" : this.state.modalContent === "avatar" ? "更换头像" : "修改密码"}
                     visible={this.state.visible}
                     confirmLoading={this.state.confirmLoading}
                     onCancel={this.handleCancel}
                     destroyOnClose={"true"}
                     footer={null}
+                    afterClose={this.state.modalContent === "avatar" ? this.aftarChangeAvatar : null}
                 >
                     {this.state.modalContent === "userMessage" ? userMessage : this.state.modalContent === "avatar" ? avatar : changePassword}
-
                 </Modal>
             </div>
         )

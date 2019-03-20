@@ -26,3 +26,11 @@ button i {
     opacity: 0.8;
     background-color: #000c17;
 }
+
+.ant-card-body {
+    height:60%;
+    min-height: 200px;
+}
+
+
+
