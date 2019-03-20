@@ -133,7 +133,7 @@ class User extends React.Component{
                     onCancel={this.handleCancel}
                     destroyOnClose={"true"}
                     footer={null}
-                    afterClose={this.state.modalContent === "avatar" ? this.aftarChangeAvatar : null}
+                    afterClose={this.state.modalContent !== "userPassword" ? this.aftarChangeAvatar : null}
                 >
                     {this.state.modalContent === "userMessage" ? userMessage : this.state.modalContent === "avatar" ? avatar : changePassword}
                 </Modal>
