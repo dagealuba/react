@@ -1,0 +1,27 @@
+.menu-item {
+    font-size: 15px;
+}
+
+.content {
+    margin-left: 14px;
+}
+
+span i {
+    width: auto;
+}
+
+.ant-upload-list-item {
+    height: 25px;
+}
+
+.ant-upload-list-item-info {
+    font-size: 20px;
+}
+
+:root .ant-upload-list-item .anticon-close{
+    font-size: 20px;
+}
+
+.ant-upload-list-item-info .anticon-loading, .ant-upload-list-item-info .anticon-paper-clip {
+    font-size: 20px
+}

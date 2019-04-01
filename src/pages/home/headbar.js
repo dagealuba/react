@@ -40,6 +40,7 @@ class HeadBar extends Component{
                 style={{ lineHeight: '64px' }}
             >
                 <Menu.Item key={"/home"}><NavLink to={"/home"}><Icon type={"home"}/>主页</NavLink></Menu.Item>
+                <Menu.Item key={"/setup"}><NavLink to={"/home/setup"}><Icon type={"setting"}></Icon>系统设置</NavLink></Menu.Item>
                 <Menu.Item key={"logout"} id={"logout"} onClick={this.props.Logout}><NavLink to={"/"}><Icon type={"logout"}/>注销</NavLink></Menu.Item>
                 {/*<span style={{float:"right"}}>/</span>*/}
                 <Menu.Item key={"/home/user"} id={"user"}><NavLink to={{

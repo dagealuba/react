@@ -5,3 +5,27 @@
     float: left;
     margin: 16px 28px 16px 0;
 }
+
+.ant-carousel .slick-slide {
+    text-align: center;
+    height: 160px;
+    line-height: 160px;
+    background: #364d79;
+    overflow: hidden;
+}
+
+.ant-carousel .slick-slide h1 {
+    color: #fff;
+}
+
+.ant-layout-sider-trigger {
+    background: #ff4d4f;
+}
+
+.ant-layout-sider,.ant-layout-header {
+    background: #ff4d4f;
+}
+
+.ant-layout-sider {
+    opacity: 0.5
+}

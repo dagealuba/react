@@ -19,7 +19,7 @@ class Root extends React.Component {
             isLogin:value,
             userId:id
         });
-        cookie.save("userId",id,{path:"/",maxAge:3600*3});
+        cookie.save("userId",id,{path:"/",maxAge:3600*24*7});
     };
 
 

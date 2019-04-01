@@ -10,3 +10,11 @@
 
 .ant-menu-item-selected #user {
 }
+
+.ant-menu-dark {
+    background: #ff4d4f;
+}
+
+.ant-menu.ant-menu-dark .ant-menu-item-selected {
+    background: #cf1322;
+}

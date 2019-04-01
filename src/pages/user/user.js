@@ -6,7 +6,6 @@ import "../css/user.css";
 import UserMessageForm from "./userMessageForm";
 import UserPasswordForm from "./userPasswordForm";
 import UserAvatar from "./userAvatar";
-import cookie from "react-cookies";
 
 const  { Meta } = Card;
 
@@ -24,7 +23,8 @@ class User extends React.Component{
             loading:true,
             visible:false,
             confirmLoading:false,
-            modalContent:"userMessage"//头像和其他信息
+            modalContent:"userMessage",//头像和其他信息
+            avatarHasChanged:false //头像是否修改
         }
     }
 
@@ -84,13 +84,21 @@ class User extends React.Component{
         })
     };
 
+    avatarHasChange = () => {
+        this.setState({
+            avatarHasChange:true
+        })
+    }
+
     afterChangeAvatar = () => {
-        window.location.reload();
+        if ( this.state.avatarHasChange ){
+            window.location.reload();
+        }
     }
 
     render() {
         const userMessage = <UserMessageForm onClick={this.handleOk.bind(this)}/>;
-        const avatar = <UserAvatar handleCancle={this.handleCancel.bind(this)} />
+        const avatar = <UserAvatar handleCancle={this.handleCancel.bind(this)} avatarHasChange = {this.avatarHasChange.bind(this)}/>
         const changePassword = <UserPasswordForm onClick={this.handleOk.bind(this)}/>;
 
         const actions = [
@@ -133,7 +141,7 @@ class User extends React.Component{
                     onCancel={this.handleCancel}
                     destroyOnClose={"true"}
                     footer={null}
-                    afterClose={this.state.modalContent !== "userPassword" ? this.afterChangeAvatar : null}
+                    afterClose={this.state.modalContent !== "userPassword"? this.afterChangeAvatar : null}
                 >
                     {this.state.modalContent === "userMessage" ? userMessage : this.state.modalContent === "avatar" ? avatar : changePassword}
                 </Modal>

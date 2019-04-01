@@ -35,11 +35,11 @@ class UserAvatar extends React.Component {
             this.setState({fileList});
         }
         else if ( !size ){
-            message.error("大小不超过2M");
+            message.error("图片大小不超过2M");
             this.setState({fileList:[]});
         }
         else if ( !type ){
-            message.error("只支持jpg及png格式");
+            message.error("只支持jpg及png格式的图片");
             this.setState({fileList:[]});
         }
     }
@@ -62,9 +62,6 @@ class UserAvatar extends React.Component {
         fetch(global.music.url+"UpdateUserAvatarServlet",{
             method:"POST",
             mode:"cors",
-            // headers:{
-            //     "Content-Type": "multipart/form-data"
-            // },
             body:formdata,
 
         }).then(res => res.text() ).then(data => {
@@ -73,6 +70,7 @@ class UserAvatar extends React.Component {
                     fileList:[],
                     loading:false
                 });
+                this.props.avatarHasChange();
                 this.props.handleCancle();
             }
             else {
@@ -104,7 +102,7 @@ class UserAvatar extends React.Component {
                 fileReader.readAsDataURL(file);
 
                 fileReader.onload = e => {
-                    file.thumbUrl = e.target.result
+                    file.thumbUrl = e.target.result;
                 };
 
                 this.setState({
@@ -113,6 +111,16 @@ class UserAvatar extends React.Component {
 
                 return false;
             },
+            onRemove: (file) => {
+                this.setState((state) => {
+                    const index = state.fileList.indexOf(file);
+                    const newFileList = state.fileList.slice();
+                    newFileList.splice(index, 1);
+                    return {
+                        fileList: newFileList,
+                    };
+                });
+            },
             fileList
         }
 
@@ -120,7 +128,6 @@ class UserAvatar extends React.Component {
             <div style={{height:"450px",width:"450px"}}>
                 <Upload
                     name={"avatar"}
-                    action={global.music.url+"UploadAvatarServlet"}
                     listType="picture-card"
                     onPreview={this.handlePreview}
                     {...props}

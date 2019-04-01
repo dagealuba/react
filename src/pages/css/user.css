@@ -28,8 +28,8 @@ button i {
 }
 
 .ant-card-body {
-    height:60%;
-    min-height: 200px;
+    height: calc(100vh - 550px);
+    min-height: 250px;
 }
 
 

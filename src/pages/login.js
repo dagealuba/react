@@ -39,6 +39,7 @@ class LoginForm extends Component {
                 }).then(res => res.text()).then(data => {
                     message.config({
                         top:250,
+                        duration:1,
                         maxCount:1
                     });
                     if (data){
