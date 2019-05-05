@@ -22,9 +22,9 @@ button i {
     width:auto;
 }
 
-.ant-card-cover:hover {
-    opacity: 0.8;
-    background-color: #000c17;
+.user-edit-btn {
+    border: none;
+    box-shadow: none;
 }
 
 .ant-card-body {

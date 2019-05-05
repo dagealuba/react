@@ -1,8 +1,8 @@
 import React from "react";
-import {Card, Col, Icon, Modal, Row, Tooltip} from "antd";
+import {Button, Card, Col, Icon, Modal, Row, Tooltip} from "antd";
 
 import "../../router/config";
-import "../css/user.css";
+import "../../css/user.css";
 import UserMessageForm from "./userMessageForm";
 import UserPasswordForm from "./userPasswordForm";
 import UserAvatar from "./userAvatar";
@@ -103,10 +103,10 @@ class User extends React.Component{
 
         const actions = [
             <Tooltip placement={"topLeft"} arrowPointAtCenter={"true"} title={<div><strong><p style={{fontSize:"20px"}}>修改个人信息</p></strong></div>}>
-                <Icon type={"edit"} onClick={this.changeUserMessage}/>
+                <Button className={"user-edit-btn"} block  onClick={this.changeUserMessage}><Icon type={"edit"}/></Button>
             </Tooltip>,
             <Tooltip placement={"topLeft"} arrowPointAtCenter={"true"} title={<div><strong><p style={{fontSize:"20px"}}>修改密码</p></strong></div>}>
-                <Icon type={"form"} onClick={this.changeUserPassword}/>
+                <Button className={"user-edit-btn"} block onClick={this.changeUserPassword}><Icon type={"form"}/></Button>
             </Tooltip>
         ];
 
@@ -115,7 +115,6 @@ class User extends React.Component{
                 <Row style={{height:"100%"}}>
                     <Col span={8} style={{height:"100%"}}>
                         <Card
-                            style={{height:"100%"}}
                             loading={this.state.loading}
                             cover={
                                 <Tooltip placement={"right"} title={<strong><p style={{fontSize:"20px"}}>点击更换头像</p></strong>}>

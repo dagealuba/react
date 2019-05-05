@@ -1,0 +1,105 @@
+.logo {
+    width: 120px;
+    height: 31px;
+    background: aliceblue;
+    float: left;
+    margin: 16px 28px 16px 0;
+}
+
+.ant-carousel .slick-slide {
+    text-align: center;
+    height: 160px;
+    line-height: 160px;
+    background: #364d79;
+    overflow: hidden;
+}
+
+.ant-carousel .slick-slide h1 {
+    color: #fff;
+}
+
+.ant-layout-sider ,.ant-layout-sider-trigger {
+    background: rgba(255,77,79,0.8);
+}
+
+.ant-layout-header {
+    background: #ff4d4f;
+}
+
+.ant-avatar-image{
+    opacity: 1;
+}
+.ant-avatar-image img {
+    opacity:1;
+}
+
+.ant-btn-group{
+    width: 100%;
+}
+
+
+.cover-round {
+    height: 27vw;
+    width: 100%;
+    -webkit-animation:round 13s linear infinite;
+}
+
+.cover{
+    width: 100%;
+    height: 27vw;
+}
+
+.avatar-icon {
+    position: absolute;
+    width: 100%;
+    font-size: 10vw;
+    z-index: 2;
+    margin-top: 30%;
+}
+
+#music-name {
+    overflow: hidden;
+}
+
+#music-name-parent {
+    overflow: hidden;
+}
+
+#music-card .ant-card-actions{
+    background: rgba(0,0,0,0);
+    border: none;
+}
+
+#music-card .ant-card-meta-description{
+    text-align: center;
+    margin-top: 10px;
+}
+
+
+#music-card button{
+    background-color: rgba(0,0,0,0);
+    border: none;
+}
+
+.ant-empty-image{
+    height:50%
+}
+
+.ant-empty{
+    font-size: x-large;
+}
+
+
+@-webkit-keyframes round{
+
+    0%{-webkit-transform:rotate(0deg);}
+
+    25%{-webkit-transform:rotate(90deg);}
+
+    50%{-webkit-transform:rotate(180deg);}
+
+    75%{-webkit-transform:rotate(270deg);}
+
+    100%{-webkit-transform:rotate(360deg);}
+
+}

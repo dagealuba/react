@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import "./pages/css/login_regist.css";
+import "./css/login_regist.css";
 
 
 class App extends Component{

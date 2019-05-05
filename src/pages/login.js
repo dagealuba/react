@@ -1,7 +1,7 @@
 import {Button, Checkbox, Col, Form, Icon, Input, Layout, Row, Typography, message} from "antd";
 import {Component} from "react";
 import React from "react";
-import "./css/login_regist.css"
+import "../css/login_regist.css"
 import {Link} from "react-router-dom";
 import "../router/config"
 

@@ -2,7 +2,7 @@ import React from "react";
 import {Button, Icon, Modal, Upload, message} from "antd";
 import cookie from "react-cookies";
 
-import "../css/upload.css"
+import "../../css/upload.css"
 
 class UserAvatar extends React.Component {
     constructor(props) {
