@@ -1,7 +1,6 @@
 import React from "react";
 import {AutoComplete, Icon, Input} from "antd";
 import debounce from "lodash.debounce"
-import {NavLink} from "react-router-dom";
 
 const Option = AutoComplete.Option;
 const OptGroup = AutoComplete.OptGroup;
@@ -33,7 +32,8 @@ class SearchMusic extends React.Component{
 
 
         if(input.value !== null && input.value !== ""){
-            this.props.history.push({pathname:"/home/search/"+input.value+"/"+this.state.type})
+            const value = input.value.myReplace('/',"&");
+            this.props.history.push({pathname:"/home/search/"+value+"/"+this.state.type})
         }
     };
 
@@ -46,14 +46,35 @@ class SearchMusic extends React.Component{
 
         // eslint-disable-next-line
         if (value !== null && value !== ""){
+            // eslint-disable-next-line
             fetch(global.music.url+"SearchBySingerServlet"+"?singer="+value,{
                 method:"GET",
 
             }).then(res => res.json() ).then( data => {
                 let result = this.state.result;
 
-                data = data.slice(0,3);
-                result[0].children = [...data]
+                let res = [];
+                for (let i = 0; i < data.length; i++){
+                    if ( res.length === 3 ){
+                        break;
+                    }
+
+                    let flag = false;
+                    for (let j = 0; j < res.length; j++){
+                        if (data[i].singer === res[j].singer){
+                            flag = !flag;
+                            break;
+                        }
+                    }
+
+                    if (!flag){
+                        res.push(data[i]);
+                    }
+                }
+
+                console.log(res);
+
+                result[0].children = [...res]
 
                 this.setState({
                     result:result
@@ -61,20 +82,41 @@ class SearchMusic extends React.Component{
 
             });
 
+            // eslint-disable-next-line
             fetch(global.music.url+"SearchByMusicNameServlet"+"?musicName="+value,{
                 method:"GET",
 
             }).then(res => res.json() ).then( data => {
                 let result = this.state.result;
+                let res = [];
+                for (let i = 0; i < data.length; i++){
+                    if ( res.length === 3 ){
+                        break;
+                    }
 
-                data = data.slice(0,3);
-                result[1].children = [...data]
+                    let flag = false;
+                    for (let j = 0; j < res.length; j++){
+                        if (data[i].musicName === res[j].musicName){
+                            flag = !flag;
+                            break;
+                        }
+                    }
+
+                    if (!flag){
+                        res.push(data[i]);
+                    }
+                }
+
+                console.log(res);
+
+                result[1].children = [...res]
 
                 this.setState({
                     result:result
                 })
 
-            })
+            });
+
 
             fetch(global.music.url+"SearchAlbumByNameServlet"+"?musicName="+value,{
                 method:"GET",
@@ -131,10 +173,10 @@ class SearchMusic extends React.Component{
             >
                 {group.children.map(opt => (
                     <Option
-                        key={group.title === "歌手" ? opt.singer: group.title === "歌曲" ? opt.musicName : opt.albumId}
+                        key={opt.musicId}
                         onClick={() => this.setState({type:group.title})}
                     >
-                        {group.title === "歌手" ? opt.singer: group.title === "歌曲" ? opt.musicName : opt.albumId}
+                        {group.title === "歌手" ? opt.singer: group.title === "歌曲" ? opt.musicName : opt.album}
                     </Option>
                 ))}
             </OptGroup>
@@ -147,6 +189,7 @@ class SearchMusic extends React.Component{
                 style={{width:"15%",marginLeft:"10px"}}
                 onSearch={this.handleSearch}
                 dataSource={options}
+                defaultActiveFirstOption={false}
             >
                 <Input
                     prefix={<Icon type="search" onClick={this.handlePressEnter}/>}

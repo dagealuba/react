@@ -80,13 +80,13 @@ class Home extends React.Component{
             return <Redirect to={"/"} />
         }
         return (
-            <Layout style={{width:"70%",marginLeft:"15%",height:"100%",opacity:0.9,minWidth:"600px",minHeight:"600px"}}>
+            <Layout style={{width:"70vw",marginLeft:"15%",height:"100vh",opacity:0.9,minWidth:"600px",minHeight:"600px",overflow:"hidden"}}>
 
                 <Sider style={siderStyle} width={"30%"} collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse} collapsedWidth={"20px"} >
                     <MusicCard music={this.state.music} playing={this.state.musicPlaying} play={this.playMusic.bind(this)} display={this.state.collapsed ? "none" : null} toMusicPage={this.toMusicPage.bind(this)}/>
                 </Sider>
 
-                <Layout>
+                <Layout >
                     <Header>
                         <div className={"logo"}></div>
                         <HeadBar current={this.state.current} onClick={this.handleClick.bind(this)} Logout={this.onLogout} {...this.props}/>
@@ -101,7 +101,6 @@ class Home extends React.Component{
                             <Route exact strict path={"/home/search/:str/:type"} component={ SearchResult }/>
                         </Switch>
                     </Content>
-
                 </Layout>
             </Layout>
         )

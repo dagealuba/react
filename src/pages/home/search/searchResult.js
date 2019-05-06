@@ -1,5 +1,6 @@
 import React from "react";
-import {Avatar, Empty, List} from "antd";
+import {Spin} from "antd";
+import Result from "./result";
 
 class SearchResult extends React.Component{
 
@@ -10,20 +11,41 @@ class SearchResult extends React.Component{
             type:"",
             str:"",
             result:[],
-            page:1
+            loading:false
         };
     };
 
+    //分页
+    parsePage = (data) => {
+
+        let pages = new Array();
+
+        for (let i = 0; i < data.length; i++){
+            let page = new Array(5);
+            for (let j = 0; j < page.length; j++){
+                page[j] = data[i++];
+            }
+
+            pages.push(page);
+        }
+
+        console.log("pages length " + pages.length);
+        console.log("data length " + data.length);
+        return pages;
+    }
+
     componentDidMount() {
-        const str = this.props.match.params.str;
+        const str = this.props.match.params.str.myReplace("&","/");
         const type = this.props.match.params.type;
 
         this.setState({
             type:type,
             str:str,
+            loading:true
         });
 
         if (type === "歌手") {
+            // eslint-disable-next-line
             fetch(global.music.url + "SearchBySingerServlet"+"?singer="+str, {
                 method:"GET"
             }).then( res => res.json() ).then( data => {
@@ -32,6 +54,7 @@ class SearchResult extends React.Component{
                 })
             });
         } else if (type === "歌曲") {
+            // eslint-disable-next-line
             fetch(global.music.url + "SearchByMusicNameServlet"+"?musicName="+str, {
                 method:"GET"
             }).then( res => res.json() ).then( data => {
@@ -40,6 +63,7 @@ class SearchResult extends React.Component{
                 })
             });
         } else if (type === "专辑") {
+            // eslint-disable-next-line
             fetch(global.music.url + "SearchAlbumByNameServlet"+"?albumName="+str, {
                 method:"GET"
             }).then( res => res.json() ).then( data => {
@@ -48,40 +72,69 @@ class SearchResult extends React.Component{
                 })
             });
         }
+
+        this.setState({
+            loading:false
+        })
+    }
+
+    componentWillReceiveProps = nextProps => {
+        const str = nextProps.match.params.str.myReplace("&","/");
+        const type = nextProps.match.params.type;
+
+        this.setState({
+            type:type,
+            str:str,
+            loading:true
+        });
+
+        if (type === "歌手") {
+            // eslint-disable-next-line
+            fetch(global.music.url + "SearchBySingerServlet"+"?singer="+str, {
+                method:"GET"
+            }).then( res => res.json() ).then( data => {
+
+                this.setState({
+                    result:[...data]
+                })
+            });
+        } else if (type === "歌曲") {
+            // eslint-disable-next-line
+            fetch(global.music.url + "SearchByMusicNameServlet"+"?musicName="+str, {
+                method:"GET"
+            }).then( res => res.json() ).then( data => {
+                this.setState({
+                    result:[...data]
+                })
+            });
+        } else if (type === "专辑") {
+            // eslint-disable-next-line
+            fetch(global.music.url + "SearchAlbumByNameServlet"+"?albumName="+str, {
+                method:"GET"
+            }).then( res => res.json() ).then( data => {
+                this.setState({
+                    result:[...data]
+                })
+            });
+        }
+
+        this.setState({
+            loading:false
+        })
     };
 
-    renderEmpty() {
-        return (
-            <Empty
-                style={{height:"100%"}}
-                description={(
-                    <span>没有找到<strong>{this.state.str}</strong>相关数据</span>
-                )}
-            />
-        )
-    };
+
+    changeType = (type) => {
+        this.props.history.push({pathname:"/home/search/"+this.state.str.myReplace("/","&")+"/"+type})
+    }
 
 
     render() {
 
         return (
-            <div style={{height:"100%"}}>
-                {this.state.result.length === 0 ? this.renderEmpty() : (
-                    <List
-                        itemLayout="horizontal"
-                        dataSource={this.state.result}
-                        renderItem={ music =>
-                            <List.Item>
-                                <List.Item.Meta
-                                    avatar={<Avatar style={{}} src={music.picSrc}/>}
-                                    title={music.musicName}
-                                    description={"歌手:"+music.singer}
-                                />
-                            </List.Item>
-                        }
-                    />
-                )}
-            </div>
+            <Spin style={{height:"100%"}} spinning={this.state.loading}>
+                <Result result={this.state.result} str={this.state.str} type={this.state.type} changeType={this.changeType.bind(this)} {...this.props}/>
+            </Spin>
         )
     }
 }
