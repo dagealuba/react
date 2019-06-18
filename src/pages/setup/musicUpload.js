@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Icon, message, Upload} from "antd";
+import {Button, Icon, message, Spin, Upload} from "antd";
 
 
 const Dragger = Upload.Dragger;
@@ -82,10 +82,10 @@ class MusicUpload extends React.Component{
                 });
             },
             fileList,
-        }
+        };
 
         return (
-            <div>
+            <Spin spinning={this.state.loading}>
                 <Dragger {...props}>
                     <p className="ant-upload-drag-icon">
                         <Icon type="inbox" />
@@ -104,13 +104,13 @@ class MusicUpload extends React.Component{
                     type={"primary"}
                     style={{float:"right",marginTop:"20px",marginRight:"10px"}}
                     disabled={this.state.fileList.length === 0}
-                    loading={this.state.loading}
+                    // loading={this.state.loading}
                     onClick={this.handleUpload}
                 >
                     {this.state.loading ? null : <Icon type={"upload"}/>}
                     上传
                 </Button>
-            </div>
+            </Spin>
         )
     }
 }

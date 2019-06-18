@@ -1,4 +1,4 @@
-import {Button, Checkbox, Col, Form, Icon, Input, Layout, Row, Typography, message} from "antd";
+import {Button, Checkbox, Col, Form, Icon, Input, Layout, Row, Typography, message, AutoComplete} from "antd";
 import {Component} from "react";
 import React from "react";
 import "../css/login_regist.css"
@@ -6,6 +6,7 @@ import {Link} from "react-router-dom";
 import "../router/config"
 
 
+const AutoCompleteOption = AutoComplete.Option;
 const { Title } = Typography;
 const { Content } = Layout;
 class LoginForm extends Component {
@@ -14,7 +15,8 @@ class LoginForm extends Component {
 
         this.state={
             login_ing:false,
-        }
+            autoComplete:[],
+        };
 
         this.idInput = React.createRef();
         this.passwordInput = React.createRef();
@@ -27,14 +29,14 @@ class LoginForm extends Component {
             if (!err){
                 this.setState({
                     login_ing:true
-                })
+                });
                 // console.log('Received values of form: ', values);
                 fetch(global.music.url+"LoginServlet",{
                     method:"POST",
                     headers:{
                         "Content-Type": "application/x-www-form-urlencoded"
                     },
-                    body:"userId="+values.userId+"&userPassword="+values.userPassword,
+                    body:"userEmail="+values.userEmail+"&userPassword="+values.userPassword,
                     mode:"cors",
                 }).then(res => res.text()).then(data => {
                     message.config({
@@ -47,24 +49,42 @@ class LoginForm extends Component {
                             login_ing:false
                         })
                     }
-                    if (data === "login_success") {
-                        this.props.Login(data,values.userId);
-                        // alert(this.props.isLogin)
-                        this.props.history.push("/home");
-                    }
-                    else if (data === "id_wrong"){
+
+                    if (data === "email_wrong"){
                         // console.log("id_error")
                         message.error("No such user");
                     }
-                    else {
+                    else if (data === 'password_wrong'){
                         message.error("Wrong password! Please check your password");
+                    }
+                    else{
+                        this.props.Login("login_success",data);
+                        // alert(this.props.isLogin)
+                        this.props.history.push("/home");
                     }
                 })
             }
         })
     };
 
+    handleMailChange = (value) => {
+        let autocomplete;
 
+        if (!value || value.indexOf('@') >= 0){
+            autocomplete = [];
+        }
+        else {
+            autocomplete = ["@qq.com","@163.com","@mails.ccnu.edu.cn"].map((domain) => {
+                let res;
+                res = value.toString()+domain.toString();
+                return res;
+            });
+        }
+
+        this.setState({
+            autoComplete:autocomplete,
+        })
+    };
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -92,6 +112,11 @@ class LoginForm extends Component {
             },
         };
 
+        const { autoComplete } = this.state;
+        const mailAutoCompelete = autoComplete.map(mail => (
+            <AutoCompleteOption key={mail}>{mail}</AutoCompleteOption>
+        ));
+
         return (
             <Layout style={{height:"100%",background:"none"}}>
                 <Content className={"index-page"}>
@@ -101,14 +126,19 @@ class LoginForm extends Component {
                                 <Form {...formItemLayout}  className={"login-form"} onSubmit={this.handleSubmit} style={{marginRight:"10%"}}>
                                     <Title style={{textAlign:"center",marginLeft:"21%"}}>登陆</Title>
 
-                                    <Form.Item label={"用户名："}>
-                                        {getFieldDecorator('userId',{
+                                    <Form.Item label={"邮箱："}>
+                                        {getFieldDecorator('userEmail',{
                                             rules:[
-                                                {required:true,message:'请输入用户名!'},
+                                                {required:true,message:'请输入邮箱!'},
                                                 {max:10,message:"UserId cannot longer than 10 words"}
                                             ],
                                         })(
-                                            <Input ref={this.idInput} prefix={<Icon type={"user"} style={{color:'rgba(0,0,0,.25'}}/>} placeholder={"用户名"}/>
+                                            <AutoComplete
+                                                dataSource={mailAutoCompelete}
+                                                onChange={this.handleMailChange}
+                                            >
+                                                <Input ref={this.idInput} prefix={<Icon type={"mail"} style={{color:'rgba(0,0,0,.25'}}/>} placeholder={"邮箱地址"}/>
+                                            </AutoComplete>
                                         )}
                                     </Form.Item>
                                     <Form.Item label={'密码：'}>

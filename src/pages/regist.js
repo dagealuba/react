@@ -18,7 +18,7 @@ class RegisterForm extends Component{
         emailIsUsed:false,
         checking:false,
         registing:false
-    }
+    };
 
 
     handleSubmit = (e) => {
@@ -33,15 +33,14 @@ class RegisterForm extends Component{
                 //提交注册表单
 
                 //表单信息
-                let body = "userId="+values.userId+"&userName=nmsl&userPassword="+values.password+"&userEmail="+values.email;
+                let body = "userName="+values.userName+"&userPassword="+values.password+"&userEmail="+values.email;
                 // console.log(body);
                 fetch(global.music.url+"RegistServlet",{
                     method:"POST",
-                    headers:{
+                    headers: {
                         "Content-Type": "application/x-www-form-urlencoded"
                     },
                     body:body,
-                    mode:"cors"
                 }).then(res => res.text() ).then( data => {
                     if (!!data){
                         this.setState({
@@ -54,27 +53,27 @@ class RegisterForm extends Component{
                         duration:2,
                         maxCount:1
                     });
-                    if (data === "true"){
-                        this.props.Login(data,values.userId);
-                        this.props.history.push("/home")
-                    }
-                    else if (data === "id-error"){
+                    if (data === "id-error"){
                         message.error("This nick name has been used.")
                     }
+                    else if (data === "email_wrong") {
+                        message.error("该邮箱已注册，请更换邮箱后重试")
+                    }
                     else {
-                        message.error("Something is wrong! Please try again later or contact us:\n Phone: 17371252670")
+                        this.props.Login("true",data);
+                        this.props.history.push("/home")
                     }
                 })
             }
         })
-    }
+    };
 
     handleConfirmBlur = (e) => {
         const value = e.target.value;
         this.setState({
             confirm:this.state.confirm || !!value
         });
-    }
+    };
 
     //第二个密码框的校验函数
     compareToFirstPassword = (rule, value, callback) => {
@@ -84,7 +83,7 @@ class RegisterForm extends Component{
         } else {
             callback();
         }
-    }
+    };
 
     //第一个密码框，值发生变化重新调用第二个密码框的校验函数
     validatorToNextPassword = (rule,value,callback) => {
@@ -95,7 +94,7 @@ class RegisterForm extends Component{
         }
 
         callback();
-    }
+    };
 
     handleMailChange = (value) => {
         let autocomplete;
@@ -114,7 +113,8 @@ class RegisterForm extends Component{
         this.setState({
             autoComplete:autocomplete,
         })
-    }
+    };
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const { autoComplete } = this.state;
@@ -157,7 +157,7 @@ class RegisterForm extends Component{
                                 <Form {...formItemLayout} onSubmit={this.handleSubmit} className={'register-form'} style={{marginRight:"10%"}}>
                                     <Title style={{textAlign:"center",marginLeft:"21%"}}>注册</Title>
                                     <Form.Item label={'用户名'}>
-                                        {getFieldDecorator('userId',{
+                                        {getFieldDecorator('userName',{
                                             rules:[
                                                 {required:true,message:'place enter your nick name'},
                                                 {max:10,message:"UserId cannot longer than 10 words"}

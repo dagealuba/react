@@ -14,7 +14,8 @@ class HeadBar extends Component{
         this.state = {
             userId:cookie.load("userId"),
             userName:"",
-            avatarSrc:""
+            avatarSrc:"",
+            userType:1
         }
     }
 
@@ -27,6 +28,7 @@ class HeadBar extends Component{
             this.setState({
                 userName:data.userName,
                 avatarSrc:data.avatarSrc,
+                userType:data.userType,
             })
         });
     }
@@ -41,8 +43,8 @@ class HeadBar extends Component{
                 style={{ lineHeight: '64px' }}
             >
                 <Menu.Item key={"/home"}><NavLink to={"/home"}><Icon type={"home"}/>发现音乐</NavLink></Menu.Item>
-                <Menu.Item key={"/home/user/friend"}><NavLink to={"/home/friend"}><Icon type={"team"}/>朋友</NavLink></Menu.Item>
-                <Menu.Item key={"/setup"}><NavLink to={"/home/setup"}><Icon type={"setting"}></Icon>系统管理</NavLink></Menu.Item>
+                <Menu.Item key={"/home/friend"}><NavLink to={"/home/friend"}><Icon type={"team"}/>朋友</NavLink></Menu.Item>
+                {this.state.userType > 1 ? <Menu.Item key={"/home/setup"}><NavLink to={"/home/setup"}><Icon type={"setting"}></Icon>系统管理</NavLink></Menu.Item> : null}
 
                 <SearchMusic {...this.props}/>
                 <Menu.Item key={"logout"} id={"logout"} onClick={this.props.Logout}><NavLink to={"/"}><Icon type={"logout"}/>注销</NavLink></Menu.Item>

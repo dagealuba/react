@@ -32,7 +32,7 @@ class Setup extends React.Component{
                 <Sider style={{width:"20%",height:"100%",background:"rgba(0, 21, 41, 0)"}}>
                     <Menu openKeys={["music_setup"]} defaultSelectedKeys={["user_setup"]} mode="inline">
                         <Menu.Item key={"user_setup"} onClick={this.handelMenuClick.bind(this,"user")}>
-                            <Icon type={"user"}/>用户管理
+                            <Icon type={"user"}/>用户设置
                         </Menu.Item>
                         <Menu.SubMenu key={"music_setup"} title={<span><Icon type={"setting"}/><span>其他</span></span>}>
                             <Menu.Item key={"upload"} onClick={this.handelMenuClick.bind(this,"upload")}><Icon type={"upload"}/>上传音乐</Menu.Item>

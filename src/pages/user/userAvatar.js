@@ -57,8 +57,6 @@ class UserAvatar extends React.Component {
         });
 
 
-        console.log(formdata.get("userId"));
-
         fetch(global.music.url+"UpdateUserAvatarServlet",{
             method:"POST",
             mode:"cors",

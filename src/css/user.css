@@ -27,10 +27,15 @@ button i {
     box-shadow: none;
 }
 
-.ant-card-body {
-    height: calc(100vh - 550px);
-    min-height: 250px;
+.user-love-box{
+    margin-left: 15px;
+    margin-right: 10px;
 }
+
+/*.ant-card-body {*/
+    /*height: calc(100vh - 550px);*/
+    /*min-height: 250px;*/
+/*}*/
 
 
 

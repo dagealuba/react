@@ -6,6 +6,8 @@ import "../../css/user.css";
 import UserMessageForm from "./userMessageForm";
 import UserPasswordForm from "./userPasswordForm";
 import UserAvatar from "./userAvatar";
+import UserLove from "./UserLove";
+import cookies from "react-cookies";
 
 const  { Meta } = Card;
 
@@ -28,7 +30,8 @@ class User extends React.Component{
         }
     }
 
-    componentDidMount(){
+
+    componentDidMount() {
         fetch(global.music.url+"FindUserServlet?userId="+this.props.match.params.userId,{
             method:"get",
             mode:"cors",
@@ -39,11 +42,27 @@ class User extends React.Component{
                 userEmail:data.userEmail,
                 userName:data.userName,
                 avatarSrc:data.avatarSrc,
-                loading:!this.state.loading
-            })
-            // alert(data.avatarSrc);
+                loading:false
+            });
         })
+
     }
+
+    componentWillReceiveProps = (nextProps) => {
+        fetch(global.music.url+"FindUserServlet?userId="+nextProps.match.params.userId,{
+            method:"get",
+            mode:"cors",
+        }).then( res => res.json() ).then(data => {
+            this.setState({
+                // avatarSrc:data.avatarSrc,
+                userId:data.userId,
+                userEmail:data.userEmail,
+                userName:data.userName,
+                avatarSrc:data.avatarSrc,
+                loading:false
+            });
+        })
+    };
 
     changeAvatar = () => {
         this.setState({
@@ -88,17 +107,17 @@ class User extends React.Component{
         this.setState({
             avatarHasChange:true
         })
-    }
+    };
 
     afterChangeAvatar = () => {
         if ( this.state.avatarHasChange ){
             window.location.reload();
         }
-    }
+    };
 
     render() {
         const userMessage = <UserMessageForm onClick={this.handleOk.bind(this)}/>;
-        const avatar = <UserAvatar handleCancle={this.handleCancel.bind(this)} avatarHasChange = {this.avatarHasChange.bind(this)}/>
+        const avatar = <UserAvatar handleCancle={this.handleCancel.bind(this)} avatarHasChange = {this.avatarHasChange.bind(this)}/>;
         const changePassword = <UserPasswordForm onClick={this.handleOk.bind(this)}/>;
 
         const actions = [
@@ -122,7 +141,7 @@ class User extends React.Component{
                                 </Tooltip>
                             }
                             hoverable={"true"}
-                            actions={this.state.userId === this.props.match.params.userId ? actions : ""}
+                            actions={cookies.load("userId") === this.props.match.params.userId ? actions : ""}
                         >
                             <Meta
                                 title={this.state.userName}
@@ -130,6 +149,10 @@ class User extends React.Component{
                             />
 
                         </Card>
+                    </Col>
+
+                    <Col span={16} style={{height:"100%"}}>
+                        <UserLove userId={this.props.match.params.userId} {...this.props}/>
                     </Col>
                 </Row>
 

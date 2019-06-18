@@ -21,6 +21,9 @@ class SearchMusic extends React.Component{
             },{
                 title:"专辑",
                 children:[]
+            },{
+                title:"用户",
+                children:[],
             }],
             type:"歌曲"
         }
@@ -42,14 +45,13 @@ class SearchMusic extends React.Component{
     };
 
     Search = (value) => {
-        console.log(value !== null && value !== "");
+        // console.log(value !== null && value !== "");
 
         // eslint-disable-next-line
         if (value !== null && value !== ""){
-            // eslint-disable-next-line
-            fetch(global.music.url+"SearchBySingerServlet"+"?singer="+value,{
+            // eslint-disable-next-line singer
+            fetch(`${global.music.url}SearchBySingerServlet?singer=${value}`,{
                 method:"GET",
-
             }).then(res => res.json() ).then( data => {
                 let result = this.state.result;
 
@@ -72,18 +74,16 @@ class SearchMusic extends React.Component{
                     }
                 }
 
-                console.log(res);
-
                 result[0].children = [...res]
 
                 this.setState({
-                    result:result
+                    result:[...result]
                 })
 
             });
 
-            // eslint-disable-next-line
-            fetch(global.music.url+"SearchByMusicNameServlet"+"?musicName="+value,{
+            // eslint-disable-next-line musicName
+            fetch(`${global.music.url}SearchByMusicNameServlet?singer=${value}`,{
                 method:"GET",
 
             }).then(res => res.json() ).then( data => {
@@ -107,7 +107,7 @@ class SearchMusic extends React.Component{
                     }
                 }
 
-                console.log(res);
+                // console.log(res);
 
                 result[1].children = [...res]
 
@@ -117,13 +117,13 @@ class SearchMusic extends React.Component{
 
             });
 
-
-            fetch(global.music.url+"SearchAlbumByNameServlet"+"?musicName="+value,{
+            // eslint-disable-next-line album
+            fetch(global.music.url+"SearchAlbumByNameServlet?musicName="+value,{
                 method:"GET",
-
             }).then(res => res.json() ).then( data => {
                 let result = this.state.result;
 
+                // console.log(data);
                 data = data.slice(0,3);
                 result[2].children = [...data]
 
@@ -131,7 +131,27 @@ class SearchMusic extends React.Component{
                     result:result
                 })
 
+            });
+
+            //user
+            fetch(`${global.music.url}FindUserServlet`,{
+                method:"POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body:`userName=${value}`,
+            }).then(res => res.json()).then(data => {
+                let result = this.state.result;
+
+                // console.log(data);
+                data = data.slice(0,3);
+                result[3].children = [...data]
+
+                this.setState({
+                    result:result
+                })
             })
+
         }
         else {
             this.setState({
@@ -144,9 +164,30 @@ class SearchMusic extends React.Component{
                 },{
                     title:"专辑",
                     children:[]
+                },{
+                    title:"用户",
+                    children:[],
                 }]
             })
         }
+    };
+
+    handleClickSearch = (e) => {
+        e.preventDefault();
+
+        this.handlePressEnter();
+    };
+
+    handleMouseEnter = (e) => {
+        this.setState({
+            type:e.target.id,
+        })
+    };
+
+    handleMouseLeave = (e) => {
+        this.setState({
+            type:"歌曲",
+        })
     };
 
     renderTitle(title) {
@@ -155,9 +196,13 @@ class SearchMusic extends React.Component{
                 {title}
                 <a
                     style={{ float: 'right' }}
-                    href=""
+                    // eslint-disable-next-line
+                    id={title}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={this.handleClickSearch}
+                    onMouseEnter={this.handleMouseEnter}
+                    onMouseLeave={this.handleMouseLeave}
                 >更多
                 </a>
             </span>
@@ -171,14 +216,37 @@ class SearchMusic extends React.Component{
                 key={group.title}
                 label={this.renderTitle(group.title)}
             >
-                {group.children.map(opt => (
-                    <Option
-                        key={opt.musicId}
-                        onClick={() => this.setState({type:group.title})}
-                    >
-                        {group.title === "歌手" ? opt.singer: group.title === "歌曲" ? opt.musicName : opt.album}
-                    </Option>
-                ))}
+                {group.children.map(opt => {
+                    // console.log(opt);
+                    if (group.title==="专辑"){
+                        return (
+                            <Option
+                                key={opt.albumId}
+                                onClick={() => this.setState({type:group.title})}
+                            >
+                                {opt.albumName}
+                            </Option>
+                        )
+                    }
+                    else if (group.title==="用户"){
+                        return (
+                            <Option
+                                key={opt.userId}
+                                onClick={() => this.setState({type:group.title})}
+                            >
+                                {opt.userName}
+                            </Option>
+                        )
+                    }
+                    else return (
+                        <Option
+                            key={opt.musicid+opt.musicName}
+                            onClick={() => this.setState({type:group.title})}
+                        >
+                            {group.title === "歌手" ? opt.singer: group.title === "歌曲" ? opt.musicName : opt.album}
+                        </Option>
+                    )
+                })}
             </OptGroup>
             )
         );
